@@ -30,3 +30,14 @@ build:
         name: go test
         code: |
           go test ./...
+
+push-image:
+  box:
+    id: alpine
+    cmd: /bin/sh
+  steps:
+    - internal/docker-push:
+        repository: gz/hello
+        registry: https://slc12fym.us.oracle.com:5000
+        tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        ports: "5000"
