@@ -31,13 +31,40 @@ build:
         code: |
           go test ./...
 
-push-image:
+deploy:
   box:
     id: alpine
     cmd: /bin/sh
+
+  steps:
+    - script:
+        name: prepare
+        code: mv ./gz /gz
+
   steps:
     - internal/docker-push:
-        repository: gz/hello
-        registry: https://slc12fym.us.oracle.com:5000
+        repository: localhost:5000/gz/hello
+        registry: http://localhost:5000/v2
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         ports: "5000"
+
+push-quay:
+  box:
+    id: alpine
+    cmd: /bin/sh
+
+  steps:
+    - script:
+        name: prepare
+        code: mv ./gz /gz
+
+    - internal/docker-push:
+        repository: quay.io/gz/hello
+        registry: https://quay.io
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        entrypoint: /gz
+        ports: 21657
+        user: 1234
+        
