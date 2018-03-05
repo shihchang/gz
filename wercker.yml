@@ -23,14 +23,16 @@ build:
     - script:
         name: go build
         code: |
-          go build ./...
+          CGO_ENABLED=0 go build -a -ldflags '-s' -installsuffix cgo -o gz-hello . 
 
-    # Test the project
+    # Copy binary to a location that gets passed along to the deploy pipeline
     - script:
-        name: go test
-        code: |
-          go test ./...
-
+        name: copy binary
+        code: cp gz-hello "$WERCKER_OUTPUT_DIR"
+    
+    #- zvelo/docker-save:
+     #   image: localgz/hello
+        
 deploy:
   box:
     id: alpine
@@ -39,16 +41,16 @@ deploy:
   steps:
     - script:
         name: prepare
-        code: mv ./gz /gz
+        code: cp ./gz-hello /gz-hello
 
-  steps:
-    - internal/docker-push:
+    - internal/docker-scratch-push:
         repository: localhost:5000/gz/hello
-        registry: http://localhost:5000/v2
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        registry: http://localhost:5000/v2
         ports: "5000"
+        cmd: /gz-hello
 
-push-quay:
+push-wcr:
   box:
     id: alpine
     cmd: /bin/sh
@@ -56,15 +58,13 @@ push-quay:
   steps:
     - script:
         name: prepare
-        code: mv ./gz /gz
+        code: cp ./gz-hello /gz-hello
 
-    - internal/docker-push:
-        repository: quay.io/gz/hello
-        registry: https://quay.io
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
+    - internal/docker-scratch-push:
+        repository: wcr.io/wercker/hello
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
-        entrypoint: /gz
-        ports: 21657
-        user: 1234
+        registry: https://wcr.io/v2
+        username: $WCR_USERNAME
+        password: $WCR_PASSWORD
+        cmd: ./gz-hello
         

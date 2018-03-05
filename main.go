@@ -1,33 +1,44 @@
 package main
 
 import (
-	"encoding/json"
-	"log"
-	"net/http"
+    "encoding/json"
+    "log"
+    "net/http"
 )
 
-type citiesResponse struct {
-	Cities []string `json:"cities"` // Cities capitalised to export it, otherwise json encoder will ignore it.
+type CitiesResponse struct {
+    Cities []string `json:"cities"`
 }
 
-func cityHandler(res http.ResponseWriter, req *http.Request) {
-	cities := citiesResponse{
-		Cities: []string{"Amsterdam", "Berlin", "New York", "San Francisco"}}
-
-	res.Header().Set("Content-Type", "application/json; charset=utf-8")
-	json.NewEncoder(res).Encode(cities)
-}
-
-func defaultHandler(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	res.Write([]byte("Hello World!"))
+func CityHandler(res http.ResponseWriter, req *http.Request) {
+    citiesResponse := &CitiesResponse{
+        Cities: []string{
+            "San Francisco",
+            "Amsterdam",
+            "Berlin",
+            "New York",
+            "Tokyo",
+            "Kyoto",
+            "Osaka",
+            "Nagasaki",
+            "Naha",
+            "London",
+            "Paris",
+            "Seoul",
+            "Austin",
+        },
+    }
+    data, _ := json.MarshalIndent(citiesResponse, "", "  ")
+    res.Header().Set("Content-Type", "application/json; charset=utf-8")
+    res.Write(data)
 }
 
 func main() {
-	http.HandleFunc("/", defaultHandler)
-	http.HandleFunc("/cities.json", cityHandler)
-	err := http.ListenAndServe(":6000", nil)
-	if err != nil {
-		log.Fatal("Unable to listen on port 5000 : ", err)
-	}
+    log.Println("Listening on this host: http://localhost:5005")
+
+    http.HandleFunc("/cities.json", CityHandler)
+    err := http.ListenAndServe(":5005", nil)
+    if err != nil {
+        log.Fatal("Unable to listen on :5005: ", err)
+    }
 }
