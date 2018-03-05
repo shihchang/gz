@@ -60,7 +60,7 @@ push-wcr:
         name: prepare
         code: cp ./gz-hello /gz-hello
 
-    - internal/docker-scratch-push:
+    - internal/docker-push:
         repository: wcr.io/wercker/hello
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         registry: https://wcr.io/v2
