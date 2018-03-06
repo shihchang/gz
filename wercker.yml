@@ -11,21 +11,22 @@ dev:
           ./source
         reload: true
 
-# Build definition
 build:
-  # The steps that will be executed on build
   steps:
-
-    # golint step!
     - wercker/golint
 
-    # Build the project
     - script:
         name: go build
         code: |
           CGO_ENABLED=0 go build -a -ldflags '-s' -installsuffix cgo -o $WERCKER_OUTPUT_DIR/gz-hello . 
 
-    # for dev only, create a local image with --docker-local option
+deploy:
+  steps:
+    - script:
+        name: go build
+        code: |
+          CGO_ENABLED=0 go build -a -ldflags '-s' -installsuffix cgo -o $WERCKER_OUTPUT_DIR/gz-hello . 
+
     - internal/docker-scratch-push:
         repository: gz/hello
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
