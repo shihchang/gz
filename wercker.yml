@@ -23,44 +23,21 @@ build:
     - script:
         name: go build
         code: |
-          CGO_ENABLED=0 go build -a -ldflags '-s' -installsuffix cgo -o gz-hello . 
+          CGO_ENABLED=0 go build -a -ldflags '-s' -installsuffix cgo -o $WERCKER_OUTPUT_DIR/gz-hello . 
 
-    # Copy binary to a location that gets passed along to the deploy pipeline
-    - script:
-        name: copy binary
-        code: cp gz-hello "$WERCKER_OUTPUT_DIR"
-    
-    #- zvelo/docker-save:
-     #   image: localgz/hello
-        
-deploy:
-  box:
-    id: alpine
-    cmd: /bin/sh
-
-  steps:
-    - script:
-        name: prepare
-        code: cp ./gz-hello /gz-hello
-
+    # for dev only, create a local image with --docker-local option
     - internal/docker-scratch-push:
-        repository: localhost:5000/gz/hello
+        repository: gz/hello
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
-        registry: http://localhost:5000/v2
-        ports: "5000"
-        cmd: /gz-hello
-
+        cmd: ./gz-hello
+        
 push-wcr:
   box:
     id: alpine
     cmd: /bin/sh
 
   steps:
-    - script:
-        name: prepare
-        code: cp ./gz-hello /gz-hello
-
-    - internal/docker-push:
+    - internal/docker-scratch-push:
         repository: wcr.io/wercker/hello
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         registry: https://wcr.io/v2
