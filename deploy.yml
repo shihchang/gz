@@ -1,0 +1,58 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  selector:
+    matchLabels:
+      app: hello
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      nodeSelector:
+        caste: patrician
+      containers:
+      - name: rawhttp
+        image: wcr.io/wercker/hello:master-f7a0262176e47ccbe71a6adac88096a517b6dbab
+        ports:
+        - name: rawhttp
+          containerPort: 5005
+          protocol: TCP
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - localhost
+    - inbox-localhost
+    secretName: localhost
+  rules:
+    - host: localhost
+      http:
+        paths:
+        - path: /api/hello
+          backend:
+            serviceName: hello
+            servicePort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: hello
+spec:
+  ports:
+    - name: rawhttp
+      port: 8080
+      targetPort: 5005
+      protocol: TCP
+  selector:
+    app: hello

@@ -19,6 +19,7 @@ build:
         name: go build
         code: |
           CGO_ENABLED=0 go build -a -ldflags '-s' -installsuffix cgo -o $WERCKER_OUTPUT_DIR/gz-hello . 
+          cp $WERCKER_OUTPUT_DIR/gz-hello $WERCKER_REPORT_ARTIFACTS_DIR
 
   after-steps:
     # for dev only, create a local image with --docker-local option, wercker build --docker-local
