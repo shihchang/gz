@@ -29,12 +29,8 @@ metadata:
   name: hello
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
-  tls:
-  - hosts:
-    - localhost
-    - inbox-localhost
-    secretName: localhost
   rules:
     - host: localhost
       http:
