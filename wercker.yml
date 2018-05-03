@@ -1,7 +1,4 @@
-box:
-  id: golang
-  ports:
-    - "5000"
+box: golang
 
 dev:
   steps:
