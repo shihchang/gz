@@ -38,7 +38,7 @@ func CityHandler(res http.ResponseWriter, req *http.Request) {
 func logHandler(w http.ResponseWriter, res *http.Request) {
     res.Write(w)
     fmt.Fprintf(w, "RemoteAddr: %s", res.RemoteAddr)
-    fmt.Printf("Request Body: %s", res.Body)
+	log.Println("Request Body: %s", res.Body)
 }
 
 
