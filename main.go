@@ -4,6 +4,7 @@ import (
     "encoding/json"
     "log"
     "net/http"
+    "fmt"
 )
 
 type CitiesResponse struct {
@@ -34,9 +35,17 @@ func CityHandler(res http.ResponseWriter, req *http.Request) {
     res.Write(data)
 }
 
+func logHandler(w http.ResponseWriter, res *http.Request) {
+    res.Write(w)
+    fmt.Fprintf(w, "RemoteAddr: %s", res.RemoteAddr)
+    fmt.Printf("Request Body: %s", res.Body)
+}
+
+
 func main() {
     log.Println("Listening on this host: http://localhost:5005")
 
+    http.HandleFunc("/", logHandler)
     http.HandleFunc("/cities.json", CityHandler)
     err := http.ListenAndServe(":5005", nil)
     if err != nil {
