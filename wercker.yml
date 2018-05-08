@@ -44,4 +44,17 @@ push-wcr:
         username: $WCR_USERNAME
         password: $WCR_PASSWORD
         cmd: ./gz-hello
-        
+
+push-ocir:
+  box:
+    id: alpine
+    cmd: /bin/sh
+
+  steps:
+    - internal/docker-scratch-push:
+        repository: iad.ocir.io/odx-pipelines/spinnaker/hello
+        tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        registry: https://iad.ocir.io/v2
+        username: $OCIR_USERNAME
+        password: $OCIR_PASSWORD
+        cmd: ./gz-hello
