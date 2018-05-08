@@ -17,11 +17,6 @@ func CityHandler(res http.ResponseWriter, req *http.Request) {
             "Amsterdam",
             "Berlin",
             "New York",
-            "Tokyo",
-            "Kyoto",
-            "Osaka",
-            "Nagasaki",
-            "Naha",
             "London",
             "Paris",
             "Seoul",
@@ -45,7 +40,7 @@ func main() {
     log.Println("Listening on this host: http://localhost:5005")
 
     http.HandleFunc("/", logHandler)
-    http.HandleFunc("/cities", CityHandler)
+    http.HandleFunc("/cities.json", CityHandler)
     err := http.ListenAndServe(":5005", nil)
     if err != nil {
         log.Fatal("Unable to listen on :5005: ", err)
