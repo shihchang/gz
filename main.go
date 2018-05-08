@@ -14,12 +14,9 @@ type CitiesResponse struct {
 func CityHandler(res http.ResponseWriter, req *http.Request) {
     citiesResponse := &CitiesResponse{
         Cities: []string{
-            "Amsterdam",
-            "Berlin",
             "New York",
             "London",
             "Paris",
-            "Beijing",
         },
     }
     data, _ := json.MarshalIndent(citiesResponse, "", "  ")
