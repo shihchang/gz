@@ -19,8 +19,6 @@ func CityHandler(res http.ResponseWriter, req *http.Request) {
             "New York",
             "London",
             "Paris",
-            "Seoul",
-            "Austin",
             "Beijing",
         },
     }
