@@ -15,7 +15,7 @@ func CityHandler(res http.ResponseWriter, req *http.Request) {
     citiesResponse := &CitiesResponse{
         Cities: []string{
             "NYC",
-            "LAb",
+            "LA",
             "Chicago",
             "Philly",
         },
