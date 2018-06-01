@@ -65,7 +65,6 @@ push-ocir:
   steps:
     - internal/docker-scratch-push:
         repository: iad.ocir.io/odx-pipelines/spinnaker/w2s
-        tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         registry: https://iad.ocir.io/v2
         username: $OCIR_USERNAME
         password: $OCIR_PASSWORD
