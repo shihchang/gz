@@ -41,7 +41,7 @@ test-w2s:
             code: ./w2s-ex &
         - script:
             name: test 3
-            code: curl http://localhost:5005
+            code: curl http://localhost:5005/cities.json
                     
 push-wcr:
   box:
