@@ -30,7 +30,19 @@ build:
         username: $WCR_USERNAME
         password: $WCR_PASSWORD
         cmd: ./w2s-ex
-        
+
+test-w2s:
+    steps:
+        - script:
+            name: test 1
+            code: pwd
+        - script:
+            name: test 2
+            code: ./hello
+        - script:
+            name: test 3
+            code: echo "test Step 3"
+                    
 push-wcr:
   box:
     id: alpine
