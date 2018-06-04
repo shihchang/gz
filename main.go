@@ -14,7 +14,7 @@ type CitiesResponse struct {
 func CityHandler(res http.ResponseWriter, req *http.Request) {
     citiesResponse := &CitiesResponse{
         Cities: []string{
-            "NYC", "Foo~~~17",
+            "NYC", "Foo~~~18!!",
             "LA",
             "Chicago",
             "Philly",
