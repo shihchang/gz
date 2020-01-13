@@ -1,3 +1,3 @@
 # Wercker triggers Spinnaker
 
-test true
+test false1
