@@ -1,3 +1,3 @@
 # Wercker triggers Spinnaker
 
-test false1
+test auth
