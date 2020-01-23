@@ -1,3 +1,3 @@
 # Wercker triggers Spinnaker
 
-test auth
+test auth disableFreeTier1
