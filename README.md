@@ -1,3 +1,3 @@
 # Wercker triggers Spinnaker
 
-test push~
+test push~~
